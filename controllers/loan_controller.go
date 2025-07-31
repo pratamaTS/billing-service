@@ -3,6 +3,7 @@ package controllers
 import (
 	"hardiantojp/billing-service/models"
 	"net/http"
+	"strconv"
 	"sync"
 
 	"github.com/gin-gonic/gin"
@@ -49,6 +50,25 @@ func CreateLoan(c *gin.Context) {
 		Schedule:     schedule,
 	}
 	loans[req.LoanID] = loan
+
+	c.JSON(http.StatusOK, loan)
+}
+
+func GetLoan(c *gin.Context) {
+	loanID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid loan id"})
+		return
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+
+	loan, ok := loans[loanID]
+	if !ok {
+		c.JSON(http.StatusNotFound, gin.H{"error": "loan not found"})
+		return
+	}
 
 	c.JSON(http.StatusOK, loan)
 }

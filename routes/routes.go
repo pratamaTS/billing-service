@@ -8,6 +8,7 @@ import (
 
 func RegisterRoutes(r *gin.Engine) {
 	r.POST("/loan", controllers.CreateLoan)
+	r.GET("/loan/:id", controllers.GetLoan)
 	r.GET("/loan/:id/outstanding", controllers.GetOutstanding)
 	r.GET("/loan/:id/is_delinquent", controllers.IsDelinquent)
 	r.POST("/loan/:id/pay", controllers.MakePayment)

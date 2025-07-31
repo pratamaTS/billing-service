@@ -32,5 +32,6 @@ func MakePayment(c *gin.Context) {
 			return
 		}
 	}
+
 	c.JSON(http.StatusBadRequest, gin.H{"message": "loan already paid"})
 }
